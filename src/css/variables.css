@@ -1,0 +1,9 @@
+:root {
+  --error-text: #fff;
+  --error-bg: #d12;
+  --error-border: #d12;
+
+  --success-text: #172;
+  --success-bg: #f3fff6;
+  --success-border: #1a2;
+}

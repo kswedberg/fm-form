@@ -1,0 +1,213 @@
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.001;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Button {
+  display: inline-block;
+  padding-top: var(--btn-padding-top, 1em);
+  padding-right:  1.5em;
+  padding-bottom: var(--btn-padding-bottom, 1.0em);
+  padding-left:  1.5em;
+  cursor: pointer;
+  border-radius: var(--btn-border-radius);
+  border-width: 0;
+  font-weight: 600;
+  line-height: 1;
+  transition: padding-left 0.4s, background-color 0.4s, border 0.4s;
+
+  svg {
+    fill: currentColor;
+  }
+  .Icon--left {
+    margin-right: 12px;
+  }
+  & + .Button {
+    margin-left: 15px;
+  }
+  & > * {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  &.is-spinning {
+    position: relative;
+    padding-left: 30px;
+
+    &::before {
+      content: '';
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      width: 20px;
+      height: 20px;
+      margin-top: -10px;
+      border-radius: 50%;
+      animation: 0.6s linear infinite spinner, 1s fade;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-top-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+/* Sizes: */
+.Button--m {
+  font-size: 18px;
+}
+
+.Button--l {
+  font-size: 22px;
+}
+
+/* Modes: */
+.Button--character {
+  font-family: Helvetica, Arial, sans-serif;
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  line-height: 22px;
+  font-weight: 400;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid;
+  border-color: var(--border-color);
+}
+
+.Button--icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 26px;
+  background-color: var(--white);
+  &:hover,
+  &:focus {
+    background-color: var(--grey);
+  }
+}
+
+/* Themes: */
+.Button--primary {
+  background-color: var(--primary-btn-bg);
+  color: var(--primary-btn-text);
+
+  &:hover {
+    background-color: var(--primary-btn-hover-bg);
+    color: var(--primary-btn-hover-text);
+  }
+  &:focus {
+    outline: 0;
+    background-color: var(--primary-btn-focus-bg);
+    color: var(--primary-btn-focus-text);
+  }
+  &:active {
+    background-color: var(--primary-btn-active-bg);
+    color: var(--primary-btn-active-text);
+  }
+}
+
+.Button--bold {
+  background-color: var(--bold-btn-bg);
+  color: var(--bold-btn-text);
+
+  &:hover {
+    background-color: var(--bold-btn-hover-bg);
+    color: var(--bold-btn-hover-text);
+  }
+  &:focus {
+    outline: 0;
+    background-color: var(--bold-btn-focus-bg);
+    color: var(--bold-btn-focus-text);
+  }
+  &:active {
+    background-color: var(--bold-btn-active-bg);
+    color: var(--bold-btn-active-text);
+  }
+}
+
+.Button--secondary {
+  background-color: var(--secondary-btn-bg);
+  color: var(--secondary-btn-text);
+
+  &:hover {
+    background-color: var(--secondary-btn-hover-bg);
+    color: var(--secondary-btn-hover-text);
+  }
+  &:focus {
+    outline: 0;
+    background-color: var(--secondary-btn-focus-bg);
+    color: var(--secondary-btn-focus-text);
+  }
+  &.is-active,
+  &:active {
+    background-color: var(--secondary-btn-active-bg);
+    color: var(--secondary-btn-active-text);
+  }
+}
+
+.Button--danger {
+  background-color: var(--danger-color);
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+    background-color: var(--danger-dark);
+  }
+}
+
+.Button--link {
+  padding: 0;
+  background: transparent;
+  color: var(--link-color);
+  cursor: pointer;
+  border-radius: 0;
+  border: 1px solid transparent;
+  transition: border var(--duration);
+
+  &:hover,
+  &:focus {
+    outline: 0;
+    border-bottom: 1px solid currentColor;
+  }
+
+  &.is-spinning::before {
+    border: 2px solid;
+    border-color: rgba(0, 0, 0, 0.7);
+    border-top-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.Button--prev,
+.Button--next {
+  min-width: 44px;
+  padding: 9px 5px 5px;
+  font-size: 12px;
+
+  svg {
+    display: block;
+    margin: 0 auto -1px;
+
+    * {
+      fill: currentColor;
+    }
+  }
+}
+
+.Button:disabled {
+  opacity: 0.5;
+}

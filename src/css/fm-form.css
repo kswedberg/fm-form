@@ -1,0 +1,24 @@
+.FormSuccess,
+.FormErrors {
+  position: relative;
+  margin: 1em 0;
+  padding: 1em;
+  .Button--character {
+    color: inherit;
+    background-color: inherit;
+    border-color: inherit;
+  }
+}
+.FormSuccess {
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success-text);
+}
+.FormErrors {
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  padding-left: 1.8em;
+  li {
+    color: var(--error-text);
+  }
+}

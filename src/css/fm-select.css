@@ -1,0 +1,83 @@
+:root {
+  --placeholder-color: #979797;
+  --form-control-padding: 0.75em 0.75em 0.4em;
+}
+
+.FormField--select {
+  position: relative;
+  padding: 0;
+}
+
+.Select-options {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  max-height: 300px;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  outline: none;
+  z-index: 10;
+}
+
+.Select {
+  display: block;
+  width: 100%;
+  min-width: 160px;
+  border: 1px solid transparent;
+  outline: none;
+  background-color: var(--black-three);
+  transition: border-color 0.2s;
+  line-height: 1;
+
+  &:focus,
+  &:focus-within,
+  /* add this to component */
+  &.has-focusWithin {
+    background-color: var(--black);
+    .Select-options {
+      border-color: var(--border-color);
+      background-color: var(--black);
+    }
+  }
+}
+
+.Select-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--form-control-padding);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--foreground);
+}
+
+.Select-placeholder {
+  color: var(--placeholder-color);
+}
+
+.Select-icon {
+  transition: transform 0.2s;
+  margin-left: 10px;
+
+  &.is-rotated180 {
+    transform: rotate(180deg);
+  }
+}
+
+.Select-option {
+  padding: var(--form-control-padding);
+  cursor: default;
+  background-color: var(--black);
+  color: var(--foreground);
+  &:hover,
+  &.has-focus {
+    background-color: var(--black-three);
+  }
+  &.is-active {
+    background-color: var(--grey);
+  }
+}
