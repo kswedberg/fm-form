@@ -1,0 +1,25 @@
+@import '../src/css-custom-props/fm-button.css';
+@import '../src/css-custom-props/fm-dropdown.css';
+@import '../src/css-custom-props/fm-field.css';
+@import '../src/css-custom-props/fm-form.css';
+
+@import '../src/css/fm-button.css';
+@import '../src/css/fm-dropdown.css';
+@import '../src/css/fm-field.css';
+@import '../src/css/fm-form.css';
+
+:root {
+  --sysfont: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+body {
+  line-height: 1.4;
+  font-family: var(--sysfont);
+}
+.FormField {
+  font-family: var(--sysfont);
+}
+
+input, button, textarea, select {
+  font-size: 1em;
+  font-family: var(--sysfont);
+}

@@ -1,12 +1,39 @@
+### Basic Form
+
+```vue
+<template>
+  <FmForm
+    api=""
+    :fields="formFields"
+  />
+</template>
+<script>
+
+export default {
+  formFields: [
+    'username',
+    'email',
+    'password',
+  ],
+  data() {
+    return {};
+  }
+};
+</script>
+```
+
+### Slightly more complex form
+
+```vue
 <template>
   <div class="u-flex Testform">
-    <div class="Grid-cell">
+    <div class="flex-cell">
       <h2>FmForm</h2>
       <FmForm @submit="fakeSubmit" :fields="formFields" api="test" />
     </div>
-    <div class="Grid-cell">
+    <div class="flex-cell">
       <h4>Values</h4>
-      <pre>{{ fieldValues | json(2)}}</pre>
+      <pre>{{ fieldValues }}</pre>
     </div>
   </div>
 </template>
@@ -46,7 +73,7 @@ export default {
       heading: 'Radio Buttons',
       value: 'silence',
       required: true,
-      items: ['1', '2', 'silence'],
+      items: [{value: 1, label: 'one (value is 1)'}, '2', 'silence'],
     },
     {
       name: 'zelect',
@@ -85,8 +112,12 @@ export default {
 .Testform {
   border-bottom: 1px solid #e7e7e7;
 }
-.Grid-cell {
+.u-flex {
+  display: flex;
+}
+.flex-cell {
   flex-basis: 10em;
   flex-grow: 1;
 }
 </style>
+```

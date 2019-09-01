@@ -1,12 +1,25 @@
 const path = require('path');
-const vueLoader = require('vue-loader');
 
 module.exports = {
   title: 'FM Form Components',
+
+  styleguideDir: 'dist/docs',
+  // ribbon: {
+  //   text: 'Back to examples',
+  //   url: 'https://vue-styleguidist.github.io/Examples.html',
+  // },
+  styles: {
+    StyleGuide: {
+      footer: {
+        display: 'none',
+      },
+    },
+  },
+  renderRootJsx: path.resolve(__dirname, 'styleguide/styleguide.root.js'),
   pagePerSection: true,
   sections: [
     {
-      name: 'Install',
+      name: 'Installation',
       content: 'docs/installation.md',
     },
     {
@@ -17,18 +30,25 @@ module.exports = {
       name: 'Components',
       content: './docs/components.md',
       components: () => [
-        './src/components/fm-button.vue',
         './src/components/fm-form.vue',
       ],
-      usageMode: 'expand', // 'hide' | 'collapse' | 'expand'
-      exampleMode: 'collapse', // 'hide' | 'collapse' | 'expand'
+      usageMode: 'collapse', // 'hide' | 'collapse' | 'expand'
+      exampleMode: 'collapse',
       sections: [
         {
+          name: 'Buttons',
+          content: './docs/fm-button-theme.md',
+          components: () => ['./src/components/fm-button.vue'],
+        },
+        {
           name: 'Fields',
-          components: () => ['./src/components/fm-field.vue'],
+          components: () => [
+            './src/components/fm-field.vue',
+            './src/components/fm-dropdown.vue',
+          ],
 
-          usageMode: 'expand', // 'hide' | 'collapse' | 'expand'
-          exampleMode: 'collapse', // 'hide' | 'collapse' | 'expand'
+          usageMode: 'expand',
+          exampleMode: 'collapse',
         },
 
       ],
@@ -36,70 +56,14 @@ module.exports = {
     },
   ],
   require: [
-    path.join(__dirname, 'styleguide/global.requires.js'),
-    path.join(__dirname, 'src/styles.css'),
+    path.join(__dirname, 'styleguide/styles.css'),
   ],
-  defaultExample: true,
-  webpackConfig: (env) => ({
-    module: {
-      rules: [
-        {
-          test: /\.vue$/,
-          loader: 'vue-loader',
-        },
-        {
-          test: /\.js?$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-        },
-        {
-          test: /\.css$/,
-          use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-              },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                // Necessary for external CSS imports to work
-                // https://github.com/facebookincubator/create-react-app/issues/2677
-                ident: 'postcss',
-                // plugins: () => [
-                //   // require('postcss-flexbugs-fixes'),
-                //   autoprefixer({
-                //     browsers: [
-                //       '>1%',
-                //       'last 4 versions',
-                //       'not ie <= 9', // React doesn't support IE8 anyway
-                //     ],
-                //     // flexbox: 'no-2009',
-                //   }),
-                // ],
-              },
-            },
-          ],
-        },
+  defaultExample: false,
 
-      ],
-    },
-    plugins: [new vueLoader.VueLoaderPlugin()],
+  getExampleFilename(componentPath) {
+    const file = path.basename(componentPath, '.vue');
 
-    performance:
-			env === 'development'
-			  ? false
-			  : {
-			    maxAssetSize: 1685000, // bytes
-			    maxEntrypointSize: 1685000, // bytes
-			    hints: 'error',
-				  },
-  }),
-  styleguideDir: 'dist',
-  // ribbon: {
-  //   text: 'Back to examples',
-  //   url: 'https://vue-styleguidist.github.io/Examples.html',
-  // },
+    return path.join(__dirname, 'docs', `${file}.md`);
+  },
+
 };
