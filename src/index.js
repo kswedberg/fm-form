@@ -11,6 +11,7 @@ import FmForm from './components/fm-form.vue';
 import FmButton from './components/fm-button.vue';
 import ConfirmButton from './components/confirm-button.vue';
 import {formFields as $formFields} from './default-fields.js';
+import {deepCopy} from './utils/deep-copy.js';
 
 const formFields = [...$formFields];
 
@@ -35,71 +36,71 @@ const merge = function(defaults, fromVal) {
 
 Vue.config.optionMergeStrategies.formFields = merge;
 
-const copyFields = (fields = []) => {
-  return [...fields].map((field) => Object.assign({}, field));
+const install = function(Vue, options = {}) {
+  // Global default overrides
+  (options.formFields || []).forEach((opt) => {
+    if (!opt.name) {
+      return;
+    }
+
+    const defaultField = formFields.find((field) => field.name === opt.name);
+
+    if (defaultField) {
+      Object.assign(defaultField, opt);
+    } else {
+      formFields.push(opt);
+    }
+  });
+
+  Vue.mixin({
+    formFields: formFields,
+    data() {
+      return {
+        formFields: deepCopy(this.$options.formFields || []),
+      };
+    },
+    methods: {
+      fieldsWithData(data = {}) {
+        const formFields = deepCopy(this.formFields || this.$options.formFields || []);
+
+        return formFields.map((item) => {
+          let value = data[item.name];
+
+          if (typeof value === 'undefined') {
+            if (item.multiple) {
+              value = [];
+            } else {
+              value = item.type === 'checkbox' ? false : '';
+            }
+          }
+
+          if (item.items && !item.items.length) {
+            item.items = this[item.name] || [];
+          }
+
+          return Object.assign(item, {value});
+        });
+      },
+    },
+  });
+
+  Vue.component(options.FmFormName || 'FmForm', FmForm);
+  Vue.component(options.FmButtonName || 'FmButton', FmButton);
+  Vue.component(options.ConfirmButtonName || 'ConfirmButton', ConfirmButton);
+  Vue.component(options.FmFieldName || 'FmField', FmField);
+  Vue.component(options.FmFieldGroupName || 'FmFieldGroup', FmFieldGroup);
 };
+
 const FormPlugin = {
-  install(Vue, options = {}) {
-
-    // Global default overrides
-    (options.formFields || []).forEach((opt) => {
-      if (!opt.name) {
-        return;
-      }
-
-      const defaultField = formFields.find((field) => field.name === opt.name);
-
-      if (defaultField) {
-        Object.assign(defaultField, opt);
-      } else {
-        formFields.push(opt);
-      }
-    });
-
-    Vue.mixin({
-      formFields: formFields,
-      data() {
-        return {
-          formFields: copyFields(this.$options.formFields),
-        };
-      },
-      methods: {
-        fieldsWithData(data = {}) {
-          const formFields = copyFields(this.formFields || this.$options.formFields);
-
-          return formFields.map((item) => {
-            let value = data[item.name];
-
-            if (typeof value === 'undefined') {
-              if (item.multiple) {
-                value = [];
-              } else {
-                value = item.type === 'checkbox' ? false : '';
-              }
-            }
-
-            if (item.items && !item.items.length) {
-              item.items = this[item.name] || [];
-            }
-
-            return Object.assign(item, {value});
-          });
-        },
-      },
-    });
-
-    Vue.component('FmForm', FmForm);
-    Vue.component('FmButton', FmButton);
-    Vue.component('ConfirmButton', ConfirmButton);
-    Vue.component('FmField', FmField);
-    Vue.component('FmFieldGroup', FmFieldGroup);
-  },
+  install,
 };
 
-// For plain Vue:
-// export default formFieldsPlugin;
+export default FormPlugin;
 
-// For use in Nuxt:
-export default () => {
-  Vue.use(FormPlugin);
+export {
+  FmForm,
+  FmButton,
+  ConfirmButton,
+  FmField,
+  FmFieldGroup
 };
