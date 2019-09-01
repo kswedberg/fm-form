@@ -17,7 +17,7 @@
       >
         {{ activeText }}
         <span v-if="!value" class="Select-placeholder">{{ placeholder }}</span>
-        <SvgAngle
+        <ArrowDownIcon
           class="Select-icon"
           :class="{ 'is-rotated180': optionsVisible }"
         />
@@ -29,64 +29,67 @@
         aria-hidden="true"
         class="u-visuallyHidden"
       >
-      <ul
-        v-show="optionsVisible"
-        @focus="setupFocus"
-        @keyup.up.prevent="selectPrevOption"
-        @keyup.down.prevent="selectNextOption"
-        @keydown="search"
-        @keydown.up.down.prevent
-        @keydown.esc.prevent="reset"
-        @keydown.enter.prevent="selectFocusedOption"
-        ref="options"
-        tabindex="-1"
-        role="listbox"
-        :aria-labelledby="`${uid}-label`"
-        :aria-activedescendant="activeDescendant"
-        class="Select-options"
-      >
-        <li
-          v-if="placeholder && !excludePlaceholderFromList"
-          @click="onPlaceholderClick"
-          :aria-selected="activeOptionIndex === -1"
-          :class="{
-            'has-focus': focusIndex === -1,
-            'is-active': activeOptionIndex === -1
-          }"
-          class="Select-option"
+      <transition name="SelectFade">
+        <ul
+          v-show="optionsVisible"
+          @focus="setupFocus"
+          @keyup.up.prevent="selectPrevOption"
+          @keyup.down.prevent="selectNextOption"
+          @keydown="search"
+          @keydown.up.down.prevent
+          @keydown.esc.prevent="reset"
+          @keydown.enter.prevent="selectFocusedOption"
+          ref="options"
+          tabindex="-1"
+          role="listbox"
+          :aria-labelledby="`${uid}-label`"
+          :aria-activedescendant="activeDescendant"
+          class="Select-options"
         >
-          {{ placeholder }}
-        </li>
-        <li
-          v-for="(option, index) in options"
-          @click="onOptionClick(option)"
-          :key="option.text"
-          ref="option"
-          :id="`${uid}-option-${index}`"
-          :aria-selected="activeOptionIndex === index"
-          :class="{
-            'has-focus': focusIndex === index,
-            'is-active': activeOptionIndex === index
-          }"
-          class="Select-option"
-          role="option"
-        >
-          {{ option.text }}
-        </li>
-      </ul>
+          <li
+            v-if="placeholder && !excludePlaceholderFromList"
+            @click="onPlaceholderClick"
+            :aria-selected="activeOptionIndex === -1"
+            :class="{
+              'has-focus': focusIndex === -1,
+              'is-active': activeOptionIndex === -1
+            }"
+            class="Select-option"
+          >
+            {{ placeholder }}
+          </li>
+          <li
+            v-for="(option, index) in options"
+            @click="onOptionClick(option)"
+            :key="option.text"
+            ref="option"
+            :id="`${uid}-option-${index}`"
+            :aria-selected="activeOptionIndex === index"
+            :class="{
+              'has-focus': focusIndex === index,
+              'is-active': activeOptionIndex === index
+            }"
+            class="Select-option"
+            role="option"
+          >
+            {{ option.text }}
+          </li>
+        </ul>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
-import SvgAngle from '@/assets/svg/arrow-down.svg';
+import ArrowDownIcon from '../icons/arrow-down.vue';
 
 let resetKeysSoFarTimer;
 
 export default {
-  name: 'FormSelect',
+  name: 'FmDropdown',
+  inheritAttrs: false,
   components: {
-    SvgAngle,
+    ArrowDownIcon,
   },
   model: {
     event: 'change',
@@ -235,9 +238,9 @@ export default {
       // this.$emit('change', this.values[0]);
     },
     focusOption(event) {
-      ['type', 'key', 'keyCode', 'which'].forEach((item) => {
-        console.log(item, event[item]);
-      });
+      // ['type', 'key', 'keyCode', 'which'].forEach((item) => {
+      //   console.log(item, event[item]);
+      // });
     },
     selectFocusedOption() {
       const value = this.focusIndex === -1 ? '' : this.values[this.focusIndex];

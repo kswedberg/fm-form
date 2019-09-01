@@ -13,16 +13,9 @@
     :class="fieldClass"
     :field="field"
   />
-  <FmEditor
-    v-else-if="tag === 'editor'"
-    v-model="field.value"
-    :field="field"
-    :class="fieldClass"
-    :label="label"
-  />
   <div
     v-else-if="tag === 'input' || tag === 'textarea'"
-    :class="[...fieldClass, value && 'is-filled', isFocused && 'is-focused']"
+    :class="[...fieldClass, field.value && 'is-filled', isFocused && 'is-focused']"
   >
     <h3 v-if="heading" class="FormField-heading">
       {{ heading }}
@@ -37,6 +30,7 @@
 
     <input
       v-if="tag == 'input'"
+      v-model="field.value"
       @input="input"
       @focus="focus"
       @blur="blur"
@@ -44,7 +38,6 @@
       class="FormField-input"
       :id="id"
       :type="type"
-      :value="value"
       v-bind="attrs"
     >
     <label
@@ -56,6 +49,7 @@
     </label>
     <textarea
       v-if="tag == 'textarea'"
+      v-model="field.value"
       @input="input"
       @focus="focus"
       @blur="blur"
@@ -63,12 +57,12 @@
       class="FormField-input"
       :id="id"
       :type="type"
-      :value="value"
       v-bind="attrs"
     />
-    <div v-if="field.note" :class="{'FormField-note': true, 'is-active': value}">
+    <div v-if="field.note" :class="{'FormField-note': true, 'is-active': field.value}">
       {{ field.note }}
     </div>
+    <FmPreview v-if="field.preview" :field="field" />
   </div>
   <FmControl
     v-else
@@ -84,17 +78,18 @@
 import FmFieldGroup from './fm-field-group.vue';
 import FmCheckbox from './fm-checkbox.vue';
 import FmControl from './fm-control.js';
+import FmPreview from './fm-preview.vue';
 
 export default {
   name: 'FmField',
+  inheritAttrs: false,
   components: {
     FmControl,
     FmFieldGroup,
     FmCheckbox,
+    FmPreview,
   },
   props: {
-    wide: Boolean,
-    value: [String, Array, Number, Boolean],
     field: {
       type: Object,
       required: true,
@@ -106,12 +101,14 @@ export default {
   },
   data() {
     return {
-      radio: '',
-      editorContent: '',
       isFocused: false,
     };
   },
   computed: {
+    uid() {
+      // eslint-disable-next-line no-underscore-dangle
+      return `fmf${this._uid}`;
+    },
     tag() {
       return this.field.tag || 'input';
     },
@@ -119,7 +116,7 @@ export default {
       return this.tag === 'input' ? this.field.type || 'text' : '';
     },
     id() {
-      return this.$attrs.id || this.field.id || `${this.tag}${this.field.name}${this.type}`;
+      return this.$attrs.id || this.field.id || `${this.uid}${this.field.name}`;
     },
     heading() {
       return this.field.heading || '';
@@ -127,10 +124,13 @@ export default {
     label() {
       return this.field.label || '';
     },
+    preview() {
+      return this.field.preview;
+    },
     fieldClass() {
       const base = ['FormField'];
 
-      ['error', 'wide', 'mini'].forEach((prop) => {
+      ['error', 'preview'].forEach((prop) => {
         if (this[prop]) {
           base.push(`FormField--${prop}`);
         }
@@ -154,7 +154,7 @@ export default {
     },
 
     attrs() {
-      const {tag, type, id, label, heading, items, multiple, ...attrs} = this.field;
+      const {tag, type, id, label, heading, items, multiple, preview, ...attrs} = this.field;
 
       return attrs;
     },
@@ -165,26 +165,43 @@ export default {
       return listeners;
     },
   },
-  created() {
-    this.editorContent = this.value;
-  },
   methods: {
-
     focus(value) {
       this.isFocused = true;
+      /**
+      * Focus event.  for text-ish inputs & textareas. Adds "is-focused" class to wrapper div and emits focus with event arg
+      * @event focus
+      * @type {object}
+      */
       this.$emit('focus', value);
     },
     blur(value) {
       this.isFocused = false;
+      /**
+      * Blur event for text-ish inputs & textareas. Removes "is-focused" class from wrapper div and emits blur with event arg
+      * @event blur
+      * @type {object}
+      */
       this.$emit('blur', value);
     },
     input({target}) {
       const value = /checkbox|radio/.test(target.type) ? target.checked : target.value;
 
+      /**
+       * Input event. Emits input with value
+       * @event input
+       * @type {string | number | boolean}
+       */
       this.$emit('input', value);
     },
+
     change(value) {
-      this.$emit('change', value);
+      /**
+      * Change event. Emits change with value
+      * @event change
+      * @type {number | string}
+      */
+      this.$emit('change', this.field.value);
     },
   },
 };

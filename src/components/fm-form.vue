@@ -3,17 +3,21 @@
     @submit.prevent="onSubmit"
     action
   >
+    <!-- @slot Content to display above fields from `fields` prop  -->
     <slot />
     <FmField
       v-for="field in fields"
       v-model="field.value"
+      @change="$emit('change', field)"
       :key="field.name"
       :field="field"
       :error="errorFields[field.name]"
     />
 
+    <!-- @slot Content to display below fields from `fields` prop  -->
     <slot name="afterFields" />
     <div class="FormField FormField--actions">
+      <!-- @slot Place buttons here to replace the default submit button -->
       <slot name="actions">
         <FmButton
           v-if="fields.length"
@@ -46,6 +50,9 @@
 </template>
 
 <script>
+/**
+* @example ../../docs/fm-form.md
+ */
 import {getAxiosErrorData} from '../utils/axios.js';
 
 export default {
@@ -120,16 +127,17 @@ export default {
     onSubmit(event) {
       const {submit} = this.$listeners;
       const {fields} = this;
+      const formFieldData = this.getFieldData();
 
       if (typeof submit === 'function') {
-        return submit({event, fields});
+        this.response = submit({event, fields, formFieldData});
+
+        return this.response;
       }
 
       if (!this.dispatch) {
         return;
       }
-
-      const formFieldData = this.getFieldData();
 
       this.response = {};
       this.success = '';

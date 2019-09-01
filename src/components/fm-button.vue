@@ -7,7 +7,8 @@
       'is-spinning': spinning,
       [`Button--${theme}`]: theme,
       [`Button--${mode}`]: mode,
-      [`Button--${size}`]: size,
+      [`Button--size-${size}`]: size,
+      [`Button--icon-${iconPosition}`]: mode === 'icon',
     }"
     :type="type"
     :disabled="isDisabled"
@@ -44,7 +45,10 @@ export default {
         return this.mode ? '' : 'primary';
       },
     },
-
+    iconPosition: {
+      type: String,
+      default: 'left',
+    },
     spinning: {
       type: Boolean,
       default: false,

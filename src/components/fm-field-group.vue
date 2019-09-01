@@ -9,13 +9,14 @@
       key="select"
       :class="fieldClass"
     >
-      <label class="FormField-label" :for="field.name">{{ field.heading || field.label }}</label>
+      <label class="FormField-label" :for="`${uid}${field.name}`">{{ field.heading || field.label }}</label>
       <select
         v-model="field.value"
+        @change="change"
         v-on="listeners"
         v-bind="attrs"
         :multiple="multiple"
-        :id="field.name"
+        :id="`${uid}${field.name}`"
       >
         <option value="">Choose one…</option>
         <option
@@ -35,14 +36,15 @@
       >
         <input
           v-model="field.value"
+          @change="change"
           v-on="listeners"
           v-bind="attrs"
           :type="field.type"
-          :id="field.name + i"
+          :id="`${uid}${field.name}${i}`"
           :name="name"
           :value="item.value"
         >
-        <label :for="field.name + i">{{ item.label }}</label>
+        <label :for="`${uid}${field.name}${i}`">{{ item.label }}</label>
       </div>
     </div>
   </div>
@@ -57,6 +59,10 @@ export default {
     },
   },
   computed: {
+    uid() {
+      // eslint-disable-next-line no-underscore-dangle
+      return `fmfg${this._uid}`;
+    },
     type() {
       return this.field.type || this.field.tag || '';
     },
@@ -110,7 +116,9 @@ export default {
     },
   },
   methods: {
-
+    change(event) {
+      this.$emit('change', {event, fieldValue: this.field.value, value: event.target.value});
+    },
   },
 };
 </script>
