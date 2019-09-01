@@ -1,0 +1,44 @@
+:root {
+  --btn-border-radius: 4px;
+  /* --btn-border-color: undefined, fallback transparent */
+  --p-btn-bg: #0096e2;
+  --p-btn-hover-bg: #00699e;
+  --p-btn-focus-bg: #00699e;
+  --p-btn-active-bg: #fff;
+  --p-btn-text: #fff;
+  --p-btn-hover-text: #fff;
+  --p-btn-focus-text: #fff;
+  --p-btn-active-text: #00699e;
+  --p-btn-border-color: inherit;
+  --p-btn-spin: rgba(255, 255, 255, 0.5);
+
+  --s-btn-bg: #fff;
+  --s-btn-hover-bg: #fff;
+  --s-btn-focus-bg: #fff;
+  --s-btn-active-bg: #0096e2;
+  --s-btn-text: #0096e2;
+  --s-btn-hover-text: #00699e;
+  --s-btn-focus-text: #00699e;
+  --s-btn-active-text: #fff;
+  --s-btn-border-color: #0096e2;
+  --s-btn-spin: rgb(0, 150, 226, 0.5);
+
+  --b-btn-bg: #e90;
+  --b-btn-hover-bg: #ffad18;
+  --b-btn-focus-bg: #ffad18;
+  --b-btn-active-bg: #fff;
+  --b-btn-text: #fff;
+  --b-btn-hover-text: #fff;
+  --b-btn-focus-text: #fff;
+  --b-btn-active-text: #e90;
+  --b-btn-border-color: #ffad18;
+
+  --danger-btn-bg: #f32222;
+  --danger-btn-hover-bg: #bb0000;
+  --danger-btn-focus-bg: #bb0000;
+  --danger-btn-active-bg: #fff;
+  --danger-btn-text: #fff;
+  --danger-btn-hover-text: #fff;
+  --danger-btn-focus-text: #fff;
+  --danger-btn-active-text: #f32222;
+}

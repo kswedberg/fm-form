@@ -1,12 +1,41 @@
 .FormField {
   margin-bottom: 1.5em;
-  max-width: 550px;
+
+  .FormField--radio,
+  .FormField--checkbox {
+    margin-bottom: 0;
+  }
+
+  &.FormField--hidden {
+    margin: 0;
+  }
+  &.FormField--actions {
+    margin-top: 1.5em;
+  }
+
+  &.FormField--preview {
+    width: 100%;
+    max-width: 1200px;
+    .FormField-input {
+      min-height: 280px;
+    }
+  }
 
   input,
   textarea {
     padding: 4px;
+    border: 1px solid;
+    border-color: var(--field-border-color);
     border-radius: 3px;
     box-shadow: none;
+    transition: border-color 0.3s;
+    &:hover {
+      border-color: var(--field-border-h-color);
+    }
+    &:focus {
+      outline: 0;
+      border-color: var(--field-border-f-color);
+    }
   }
 
   input,
@@ -15,80 +44,44 @@
     display: block;
   }
 
-  input[type='checkbox'],
-  input[type='radio'] {
-    display: inline-block;
-  }
-
-  input[type='hidden'] {
-    display: none;
-  }
-  input[type='number'] {
-    width: 5em;
-  }
-
   textarea {
     width: 100%;
     min-height: 80px;
   }
-  .FormField--radio,
-  .FormField--checkbox {
-    margin-bottom: 0;
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    display: inline-block;
+    padding: 0;
+    border: 0;
+    margin: 0 6px 0 0;
+  }
+  input[type="hidden"] {
+    display: none;
+  }
+  input[type="number"] {
+    width: 5em;
+  }
+}
+
+.FormField--checkbox {
+  position: relative;
+  padding-left: 25px;
+  input[type='checkbox'] {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 }
 
 .FormField--error {
-  color: var(--error-text);
-
+  /* color: var(--error-color); */
   input,
   textarea,
   select {
     border: 1px solid var(--error-border);
-    color: var(--error-text);
+    color: var(--error-border);
   }
-}
-
-.FormField--text {
-  position: relative;
-  .FormField-label {
-    cursor: text;
-    position: absolute;
-    left: 3px;
-    top: 4px;
-    transition: all 0.2s;
-    transform: translateY(50%);
-    color: var(--grey);
-  }
-  &.is-filled {
-    .FormField-label {
-      cursor: default;
-      transform: translateY(-100%);
-    }
-  }
-  &.is-focused,
-  &:focus-within {
-    .FormField-label {
-      cursor: default;
-      transform: translateY(-100%);
-      color: var(--blue);
-    }
-  }
-
-  input {
-    background-color: transparent;
-    border: 1px solid transparent;
-    border-bottom-color: var(--foreground);
-    border-radius: 0;
-    width: 100%;
-    &:focus {
-      border: 1px solid transparent;
-      border-bottom-color: var(--blue);
-    }
-  }
-}
-
-.FormField--actions {
-  margin-top: 1.5em;
 }
 
 .FormField--ib {

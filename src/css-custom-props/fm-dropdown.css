@@ -1,0 +1,10 @@
+:root {
+  --placeholder-color: #979797;
+  --form-control-padding: 0.5em 0.75em;
+  --dd-border-color: #e3e3e6;
+  --dd-border-h-color: #bbbbbe;
+  --dd-border-f-color: #0096e2;
+  --dd-bg: #fff;
+  --dd-option-h-bg: #cccccf;
+  --dd-option-a-bg: #bbbbbe;
+}

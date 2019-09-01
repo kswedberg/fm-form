@@ -14,14 +14,17 @@
 }
 
 .Button {
+  font-size: 1em;
   display: inline-block;
   padding-top: var(--btn-padding-top, 1em);
   padding-right:  1.5em;
-  padding-bottom: var(--btn-padding-bottom, 1.0em);
+  padding-bottom: var(--btn-padding-bottom, 1em);
   padding-left:  1.5em;
   cursor: pointer;
-  border-radius: var(--btn-border-radius);
-  border-width: 0;
+  border-radius: var(--btn-border-radius, 0);
+  border-width: var(--btn-border-width, 1px);
+  border-style: solid;
+  border-color: var(--btn-border-color, transparent);
   font-weight: 600;
   line-height: 1;
   transition: padding-left 0.4s, background-color 0.4s, border 0.4s;
@@ -56,19 +59,24 @@
       margin-top: -10px;
       border-radius: 50%;
       animation: 0.6s linear infinite spinner, 1s fade;
-      border: 2px solid rgba(255, 255, 255, 0.8);
+      border: 2px solid;
       border-top-color: rgba(255, 255, 255, 0.3);
     }
   }
 }
 
 /* Sizes: */
-.Button--m {
-  font-size: 18px;
+
+.Button--size-s {
+  font-size: .8em;
 }
 
-.Button--l {
-  font-size: 22px;
+.Button--size-  l {
+  font-size: 1.125em;
+}
+
+.Button--size-  xl {
+  font-size: 1.25em;
 }
 
 /* Modes: */
@@ -90,72 +98,82 @@
 }
 
 .Button--icon {
+  padding: 0;
+  text-align: center;
+  position: relative;
   width: 44px;
   height: 44px;
-  border-radius: 26px;
-  background-color: var(--white);
-  &:hover,
-  &:focus {
-    background-color: var(--grey);
-  }
+  border-radius: 50%;
 }
 
 /* Themes: */
 .Button--primary {
-  background-color: var(--primary-btn-bg);
-  color: var(--primary-btn-text);
-
+  background-color: var(--p-btn-bg);
+  color: var(--p-btn-text);
+  border-color: var(--p-btn-border-color, var(--btn-border-color));
   &:hover {
-    background-color: var(--primary-btn-hover-bg);
-    color: var(--primary-btn-hover-text);
+    background-color: var(--p-btn-hover-bg);
+    color: var(--p-btn-hover-text);
   }
   &:focus {
     outline: 0;
-    background-color: var(--primary-btn-focus-bg);
-    color: var(--primary-btn-focus-text);
+    background-color: var(--p-btn-focus-bg);
+    color: var(--p-btn-focus-text);
   }
   &:active {
-    background-color: var(--primary-btn-active-bg);
-    color: var(--primary-btn-active-text);
+    background-color: var(--p-btn-active-bg);
+    color: var(--p-btn-active-text);
   }
-}
 
-.Button--bold {
-  background-color: var(--bold-btn-bg);
-  color: var(--bold-btn-text);
-
-  &:hover {
-    background-color: var(--bold-btn-hover-bg);
-    color: var(--bold-btn-hover-text);
-  }
-  &:focus {
-    outline: 0;
-    background-color: var(--bold-btn-focus-bg);
-    color: var(--bold-btn-focus-text);
-  }
-  &:active {
-    background-color: var(--bold-btn-active-bg);
-    color: var(--bold-btn-active-text);
+  &.is-spinning::before {
+    border-top-color: var(--p-btn-spin);
   }
 }
 
 .Button--secondary {
-  background-color: var(--secondary-btn-bg);
-  color: var(--secondary-btn-text);
+  background-color: var(--s-btn-bg);
+  border-color: var(--s-btn-border-color, var(--btn-border-color));
+
+  color: var(--s-btn-text);
 
   &:hover {
-    background-color: var(--secondary-btn-hover-bg);
-    color: var(--secondary-btn-hover-text);
+    background-color: var(--s-btn-hover-bg);
+    color: var(--s-btn-hover-text);
   }
   &:focus {
     outline: 0;
-    background-color: var(--secondary-btn-focus-bg);
-    color: var(--secondary-btn-focus-text);
+    background-color: var(--s-btn-focus-bg);
+    color: var(--s-btn-focus-text);
   }
-  &.is-active,
+
   &:active {
-    background-color: var(--secondary-btn-active-bg);
-    color: var(--secondary-btn-active-text);
+    background-color: var(--s-btn-active-bg);
+    color: var(--s-btn-active-text);
+  }
+
+  &.is-spinning::before {
+    border-top-color: var(--s-btn-spin);
+  }
+}
+
+
+.Button--bold {
+  background-color: var(--b-btn-bg);
+  color: var(--b-btn-text);
+  border-color: var(--b-btn-border-color, var(--btn-border-color));
+
+  &:hover {
+    background-color: var(--b-btn-hover-bg);
+    color: var(--b-btn-hover-text);
+  }
+  &:focus {
+    outline: 0;
+    background-color: var(--b-btn-focus-bg);
+    color: var(--b-btn-focus-text);
+  }
+  &:active {
+    background-color: var(--b-btn-active-bg);
+    color: var(--b-btn-active-text);
   }
 }
 
@@ -192,22 +210,7 @@
   }
 }
 
-.Button--prev,
-.Button--next {
-  min-width: 44px;
-  padding: 9px 5px 5px;
-  font-size: 12px;
-
-  svg {
-    display: block;
-    margin: 0 auto -1px;
-
-    * {
-      fill: currentColor;
-    }
-  }
-}
-
 .Button:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
 }
