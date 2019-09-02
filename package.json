@@ -6,8 +6,10 @@
   "scripts": {
     "build": "NODE_ENV=production rollup --config build/rollup.config.js",
     "build:es": "NODE_ENV=production rollup --config build/rollup.config.js --format es",
-    "build:ssr": "NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
-    "build:unpkg": "NODE_ENV=production rollup --config build/rollup.config.js --format iife",
+    "build:cjs": "NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
+    "build:iife": "NODE_ENV=production rollup --config build/rollup.config.js --format iife",
+    "build:css": "node build/rollup.css.js",
+    "prebuild": "npm run build:css",
     "styleguide": "vue-cli-service styleguidist",
     "build:styleguide": "vue-cli-service styleguidist:build"
   },
@@ -39,6 +41,10 @@
     "rollup": "^1.20.3",
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-copy": "^3.1.0",
+    "rollup-plugin-css-porter": "^1.0.2",
+    "rollup-plugin-delete": "^1.1.0",
+    "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.1.1",
     "rollup-plugin-vue": "^5.0.1",
@@ -50,6 +56,16 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.39.2"
   },
+  "files": [
+    "dist/**/*",
+    "docs/*",
+    "src/**/*.css",
+    "src/**/*.js",
+    "src/**/*.vue",
+    "!src/css.js"
+  ],
   "license": "MIT",
-  "main": "index.js"
+  "main": "dist/fm-form.cjs.js",
+  "module": "dist/fm-form.js",
+  "unpkg": "dist/fm-form.min.js"
 }

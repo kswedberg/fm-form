@@ -5,6 +5,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import {terser} from 'rollup-plugin-terser';
 import minimist from 'minimist';
+import del from 'rollup-plugin-delete';
+import copy from 'rollup-plugin-copy';
 
 const argv = minimist(process.argv.slice(2));
 
@@ -58,10 +60,19 @@ if (!argv.format || argv.format === 'es') {
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
       ...baseConfig.plugins.postVue,
+      del({
+        targets: 'dist/styles.js',
+      }),
       terser({
         output: {
           ecma: 6,
         },
+      }),
+      copy({
+        targets: [
+          {src: 'src/css/*.css', dest: 'dist/css'},
+          {src: 'src/icons/*', dest: 'dist/icons'},
+        ],
       }),
     ],
   };
