@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <FmFieldGroup
     v-if="field.items"
     v-on="listeners"

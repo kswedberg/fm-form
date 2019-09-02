@@ -9,7 +9,7 @@ import FmField from './components/fm-field.vue';
 import FmFieldGroup from './components/fm-field-group.vue';
 import FmForm from './components/fm-form.vue';
 import FmButton from './components/fm-button.vue';
-import ConfirmButton from './components/confirm-button.vue';
+import FmConfirmButton from './components/fm-confirm-button.vue';
 import {formFields as defaultFields} from './default-fields.js';
 import {deepCopy} from './utils/deep-copy.js';
 
@@ -93,7 +93,7 @@ const install = function(Vue, options = {}) {
 
   Vue.component(options.FmFormName || 'FmForm', FmForm);
   Vue.component(options.FmButtonName || 'FmButton', FmButton);
-  Vue.component(options.ConfirmButtonName || 'ConfirmButton', ConfirmButton);
+  Vue.component(options.FmConfirmButtonName || 'FmConfirmButton', FmConfirmButton);
   Vue.component(options.FmFieldName || 'FmField', FmField);
   Vue.component(options.FmFieldGroupName || 'FmFieldGroup', FmFieldGroup);
 };
@@ -119,7 +119,7 @@ export default FormPlugin;
 export {
   FmForm,
   FmButton,
-  ConfirmButton,
+  FmConfirmButton,
   FmField,
   FmFieldGroup
 };

@@ -31,6 +31,7 @@
 
 <script>
 export default {
+  name: 'FmConfirmButton',
   props: {
     theme: {
       type: String,
@@ -92,15 +93,3 @@ export default {
   },
 };
 </script>
-
-<style lang="postcss" scoped>
-.Confirm.is-float {
-  position: relative;
-  .Confirm-label {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    padding: 2px;
-  }
-}
-</style>

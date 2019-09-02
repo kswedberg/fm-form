@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div :class="containerClass">
     <h3 v-if="field.heading || (field.tag !== 'select' && field.label)">{{ field.heading || field.label }}</h3>
     <div v-if="field.note" class="FormField-note is-active">
