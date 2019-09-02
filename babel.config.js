@@ -4,6 +4,7 @@ module.exports = {
     {
       useBuiltIns: false,
       modules: false,
+      polyfills: false,
     },
   ],
   comments: false,
