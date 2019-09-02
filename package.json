@@ -4,19 +4,20 @@
   "description": "Form Components for Fusionary",
   "author": "Karl Swedberg",
   "scripts": {
-    "build": "vue-cli-service build --target lib --name fm-form ./src/index.js",
-    "//build": "NODE_ENV=production rollup --config build/rollup.config.js",
+    "build": "NODE_ENV=production rollup --config build/rollup.config.js",
     "build:es": "NODE_ENV=production rollup --config build/rollup.config.js --format es",
     "build:ssr": "NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
     "build:unpkg": "NODE_ENV=production rollup --config build/rollup.config.js --format iife",
     "styleguide": "vue-cli-service styleguidist",
     "build:styleguide": "vue-cli-service styleguidist:build"
   },
+  "peerDependencies": {
+    "vue": "^2.6.10",
+    "vuex": "^3.1.1"
+  },
   "dependencies": {
     "@znck/prop-types": "^0.6.3",
-    "vue": "^2.6.10",
-    "vue-types": "^1.6.0",
-    "vuex": "^3.1.1"
+    "vue-types": "^1.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

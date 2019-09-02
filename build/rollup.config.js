@@ -9,7 +9,8 @@ import minimist from 'minimist';
 const argv = minimist(process.argv.slice(2));
 
 const baseConfig = {
-  input: 'src/entry.js',
+  input: 'src/index.js',
+
   plugins: {
     preVue: [
       replace({
@@ -19,7 +20,7 @@ const baseConfig = {
       commonjs(),
     ],
     vue: {
-      css: true,
+      css: false,
       template: {
         isProduction: true,
       },
@@ -33,16 +34,17 @@ const baseConfig = {
 // UMD/IIFE shared settings: externals and output.globals
 // Refer to https://rollupjs.org/guide/en#output-globals for details
 const external = [
-  // list external dependencies, exactly the way it is written in the import statement.
-  // eg. 'jquery'
+  'vue',
+  'vuex',
 ];
 const globals = {
   // Provide global variable names to replace your external imports
   // eg. jquery: '$'
 };
 
-// Customize configs for individual targets
 const buildFormats = [];
+
+// Customize configs for individual targets
 
 if (!argv.format || argv.format === 'es') {
   const esConfig = {
