@@ -4,10 +4,10 @@ module.exports = {
   title: 'FM Form Components',
 
   styleguideDir: 'dist/docs',
-  // ribbon: {
-  //   text: 'Back to examples',
-  //   url: 'https://vue-styleguidist.github.io/Examples.html',
-  // },
+  ribbon: {
+    text: 'Back to Github',
+    url: 'https://github.com/kswedberg/fm-form',
+  },
   styles: {
     StyleGuide: {
       footer: {
