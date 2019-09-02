@@ -14,22 +14,22 @@ Include fm-form after Vue and it will install itself automatically:
 ## NPM
 
 ```sh
-$ npm install fm-form
+npm install fm-form
 ```
 
 ## Yarn
 
 ```sh
-$ yarn add fm-form
+yarn add fm-form
 ```
 
-When used with a module system, you must explicitly install the `fm-form` via `Vue.use()`:
+When used with a module system, you must explicitly install `fm-form` via `Vue.use()`:
 
 ```javascript
 import Vue from 'vue'
-import fm-form from 'fm-form'
+import FmForm from 'fm-form'
 
-Vue.use(fm-form)
+Vue.use(FmForm)
 ```
 
 You don't need to do this when using global script tags.
@@ -40,8 +40,8 @@ You will have to clone directly from GitHub and build `fm-form` yourself if
 you want to use the latest dev build.
 
 ```sh
-$ git clone https://github.com//fm-form.git node_modules/fm-form
-$ cd node_modules/fm-form
-$ npm install
-$ npm run build
+git clone https://github.com//fm-form.git node_modules/fm-form
+cd node_modules/fm-form
+npm install
+npm run build
 ```

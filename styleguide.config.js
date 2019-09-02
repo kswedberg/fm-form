@@ -24,7 +24,7 @@ module.exports = {
     },
     {
       name: 'Getting Started',
-      content: 'docs/started.md',
+      content: 'docs/getting-started.md',
     },
     {
       name: 'Components',
