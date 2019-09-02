@@ -1,9 +1,10 @@
-@import '../src/css-custom-props/fm-button.css';
-@import '../src/css-custom-props/fm-dropdown.css';
-@import '../src/css-custom-props/fm-field.css';
-@import '../src/css-custom-props/fm-form.css';
+@import '../src/css/cp-button.css';
+@import '../src/css/cp-dropdown.css';
+@import '../src/css/cp-field.css';
+@import '../src/css/cp-form.css';
 
 @import '../src/css/fm-button.css';
+@import '../src/css/fm-confirm-button.css';
 @import '../src/css/fm-dropdown.css';
 @import '../src/css/fm-field.css';
 @import '../src/css/fm-form.css';
