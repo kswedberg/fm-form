@@ -5,8 +5,9 @@
       <button
         @click="toggleOptions"
         @keydown="search"
-        @keyup.up.exact.prevent="selectPrevOption"
-        @keyup.down.exact.prevent="selectNextOption"
+        @keyup.up.exact.prevent="selectOption($event, 'prev')"
+        @keyup.down.exact.prevent="selectOption($event, 'next')"
+        @keydown.up.down.prevent
         @keyup.ctrl="focusOption"
         ref="button"
         :id="`${uid}-button`"
@@ -33,8 +34,8 @@
         <ul
           v-show="optionsVisible"
           @focus="setupFocus"
-          @keyup.up.prevent="selectPrevOption"
-          @keyup.down.prevent="selectNextOption"
+          @keyup.up.prevent="selectOption($event, 'prev')"
+          @keyup.down.prevent="selectOption($event, 'next')"
           @keydown="search"
           @keydown.up.down.prevent
           @keydown.esc.prevent="reset"
@@ -245,22 +246,20 @@ export default {
     selectFocusedOption() {
       const value = this.focusIndex === -1 ? '' : this.values[this.focusIndex];
 
+      /**
+       * Change event. Emits change with value
+       * @type {string}
+       */
       this.$emit('change', value);
       this.reset();
     },
-    selectPrevOption() {
-      this.focusIndex = this.prevFocusIndex;
-      if (!this.optionsVisible) {
-        const value = this.prevOptionsIndex === -1 ? '' : this.values[this.prevOptionIndex];
 
-        this.$emit('change', value);
-      }
-    },
+    selectOption(event, direction) {
 
-    selectNextOption() {
-      this.focusIndex = this.nextFocusIndex;
+      this.focusIndex = this[`${direction}FocusIndex`];
       if (!this.optionsVisible) {
-        const value = this.nextOptionIndex === -1 ? '' : this.values[this.nextOptionIndex];
+        const index = this[`${direction}OptionIndex`];
+        const value = index === -1 ? '' : this.values[index];
 
         this.$emit('change', value);
       }
