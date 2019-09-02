@@ -10,10 +10,10 @@ import FmFieldGroup from './components/fm-field-group.vue';
 import FmForm from './components/fm-form.vue';
 import FmButton from './components/fm-button.vue';
 import ConfirmButton from './components/confirm-button.vue';
-import {formFields as $formFields} from './default-fields.js';
+import {formFields as defaultFields} from './default-fields.js';
 import {deepCopy} from './utils/deep-copy.js';
 
-const formFields = [...$formFields];
+const formFields = deepCopy(defaultFields);
 
 const merge = function(defaults, fromVal) {
   if (!(defaults && fromVal)) {
@@ -37,6 +37,13 @@ const merge = function(defaults, fromVal) {
 Vue.config.optionMergeStrategies.formFields = merge;
 
 const install = function(Vue, options = {}) {
+  // Avoid installing more than once
+  if (install.installed) {
+    return;
+  }
+
+  install.installed = true;
+
   // Global default overrides
   (options.formFields || []).forEach((opt) => {
     if (!opt.name) {
@@ -94,6 +101,18 @@ const install = function(Vue, options = {}) {
 const FormPlugin = {
   install,
 };
+
+// Auto-install when global Vue has been loaded
+let GlobalVue = null;
+
+if (typeof window !== 'undefined') {
+  GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+  GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+  GlobalVue.use(FormPlugin);
+}
 
 export default FormPlugin;
 
