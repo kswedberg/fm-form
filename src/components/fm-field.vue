@@ -197,10 +197,10 @@ export default {
 
     change(value) {
       /**
-      * Change event. Emits change with value
-      * @event change
-      * @type {number | string}
-      */
+       * Change event. Emits change with value
+       * @event change
+       * @type {number | string}
+       */
       this.$emit('change', this.field.value);
     },
   },
