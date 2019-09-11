@@ -118,7 +118,7 @@ if (!argv.format || argv.format === 'iife') {
       format: 'iife',
       name: 'FmForm',
       exports: 'named',
-      globals,
+      globals: {vue: 'Vue'},
     },
     plugins: [
       ...baseConfig.plugins.preVue,
