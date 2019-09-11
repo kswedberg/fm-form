@@ -3,31 +3,44 @@
     @submit.prevent="onSubmit"
     action
   >
-    <!-- @slot Content to display above fields from `fields` prop  -->
-    <slot />
-    <FmField
-      v-for="field in fields"
-      v-model="field.value"
-      @change="$emit('change', field)"
-      :key="field.name"
-      :field="field"
-      :error="errorFields[field.name]"
-    />
+    <div v-if="!hideForm">
+      <!-- @slot Content to display above fields from `fields` prop  -->
+      <slot />
+      <FmField
+        v-for="field in fields"
+        v-model="field.value"
+        @change="$emit('change', field)"
+        :key="field.name"
+        :field="field"
+        :error="errorFields[field.name]"
+      />
 
-    <!-- @slot Content to display below fields from `fields` prop  -->
-    <slot name="afterFields" />
-    <div class="FormField FormField--actions">
-      <!-- @slot Place buttons here to replace the default submit button -->
-      <slot name="actions">
-        <FmButton
-          v-if="fields.length"
-          :theme="theme"
-          type="submit"
-          :spinning="isSending"
+      <!-- @slot Content to display below fields from `fields` prop  -->
+      <slot name="afterFields" />
+      <div class="FormField FormField--actions">
+        <!-- @slot Place buttons here to replace the default submit button -->
+        <slot name="actions">
+          <FmButton
+            v-if="fields.length"
+            :theme="theme"
+            type="submit"
+            :spinning="isSending"
+          >
+            {{ submitText }}
+          </FmButton>
+        </slot>
+      </div>
+      <ul
+        v-if="errorMessages.length"
+        class="FormErrors"
+      >
+        <li
+          v-for="error in errorMessages"
+          :key="error"
         >
-          {{ submitText }}
-        </FmButton>
-      </slot>
+          {{ error }}
+        </li>
+      </ul>
     </div>
     <transition name="Fade">
       <div v-if="response.status === 'success' && response.message" class="FormSuccess">
@@ -35,17 +48,6 @@
         {{ response.message }}
       </div>
     </transition>
-    <ul
-      v-if="errorMessages.length"
-      class="FormErrors"
-    >
-      <li
-        v-for="error in errorMessages"
-        :key="error"
-      >
-        {{ error }}
-      </li>
-    </ul>
   </form>
 </template>
 
@@ -80,6 +82,14 @@ export default {
       type: String,
       default: 'Submit',
     },
+    hide: {
+      type: Boolean,
+      default: false,
+    },
+    hideOnSuccess: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -88,6 +98,9 @@ export default {
     };
   },
   computed: {
+    hideForm() {
+      return this.hide || (this.hideOnSuccess && this.response.status === 'success');
+    },
     errors() {
       return this.response && this.response.errors || [];
     },
