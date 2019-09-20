@@ -5,10 +5,9 @@
       <button
         @click="toggleOptions"
         @keydown="search"
-        @keyup.up.exact.prevent="selectOption($event, 'prev')"
-        @keyup.down.exact.prevent="selectOption($event, 'next')"
-        @keydown.up.down.prevent
-        @keyup.ctrl="focusOption"
+        @keyup.up.exact.prevent.stop="selectOption($event, 'prev')"
+        @keyup.down.exact.prevent.stop="selectOption($event, 'next')"
+        @keydown.up.down.prevent.stop
         ref="button"
         :id="`${uid}-button`"
         aria-haspopup="listbox"
@@ -16,7 +15,7 @@
         :aria-expanded="optionsVisible"
         class="Select-button"
       >
-        {{ activeText }}
+        <span v-if="value">{{ activeText }}</span>
         <span v-if="!value" class="Select-placeholder">{{ placeholder }}</span>
         <ArrowDownIcon
           class="Select-icon"
@@ -34,10 +33,10 @@
         <ul
           v-show="optionsVisible"
           @focus="setupFocus"
-          @keyup.up.prevent="selectOption($event, 'prev')"
-          @keyup.down.prevent="selectOption($event, 'next')"
+          @keyup.up.prevent.stop="selectOption($event, 'prev')"
+          @keyup.down.prevent.stop="selectOption($event, 'next')"
           @keydown="search"
-          @keydown.up.down.prevent
+          @keydown.up.down.prevent.stop
           @keydown.esc.prevent="reset"
           @keydown.enter.prevent="selectFocusedOption"
           ref="options"
@@ -71,6 +70,7 @@
               'is-active': activeOptionIndex === index
             }"
             class="Select-option"
+            :style="option.styles"
             role="option"
           >
             {{ option.text }}
@@ -135,6 +135,7 @@ export default {
         return typeof opt === 'object' ? {
           value: opt.value,
           text: opt.text || opt.label,
+          styles: opt.styles,
         } : {
           value: opt,
           text: opt,
@@ -206,7 +207,11 @@ export default {
       this.$emit('change', '');
       this.reset();
     },
-    onOptionClick(option) {
+    async onOptionClick(option) {
+      const index = this.values.findIndex((item) => item === option.value);
+
+      this.focusIndex = index;
+      await this.$nextTick();
       this.$emit('change', option.value);
       this.reset();
     },
@@ -238,11 +243,7 @@ export default {
       // }
       // this.$emit('change', this.values[0]);
     },
-    focusOption(event) {
-      // ['type', 'key', 'keyCode', 'which'].forEach((item) => {
-      //   console.log(item, event[item]);
-      // });
-    },
+
     selectFocusedOption() {
       const value = this.focusIndex === -1 ? '' : this.values[this.focusIndex];
 
