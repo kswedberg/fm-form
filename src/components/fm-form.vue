@@ -66,6 +66,12 @@ export default {
         return [];
       },
     },
+    otherData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
     theme: {
       type: String,
       default: 'primary',
@@ -139,8 +145,8 @@ export default {
     },
     onSubmit(event) {
       const {submit} = this.$listeners;
-      const {fields} = this;
-      const formFieldData = this.getFieldData();
+      const {fields, otherData} = this;
+      const formFieldData = Object.assign(this.getFieldData(), otherData);
 
       if (typeof submit === 'function') {
         this.response = submit({event, fields, formFieldData});
