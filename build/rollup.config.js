@@ -102,6 +102,15 @@ if (!argv.format || argv.format === 'cjs') {
         },
       }),
       ...baseConfig.plugins.postVue,
+      terser({
+        compress: false,
+        mangle: false,
+        output: {
+          beautify: true,
+          indent_level: 2,
+        },
+      }),
+
     ],
   };
 
