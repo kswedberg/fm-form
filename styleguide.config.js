@@ -4,6 +4,7 @@ module.exports = {
   title: 'FM Form Components',
 
   styleguideDir: 'dist/docs',
+  styleguidePublicPath: '/fm-form',
   ribbon: {
     text: 'Back to Github',
     url: 'https://github.com/kswedberg/fm-form',
