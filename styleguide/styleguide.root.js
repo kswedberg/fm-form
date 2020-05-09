@@ -6,7 +6,7 @@ import FmFormPlugin from '../src/index.js';
 Vue.use(FmFormPlugin);
 Vue.use(Vuex);
 
-// in order not to polute the database and making useless database calls
+// in order not to pollute the database and making useless database calls
 // we mock axios (we could have used mock-axios instead)
 Vue.prototype.$axios = {
   $get: () => Promise.resolve([
