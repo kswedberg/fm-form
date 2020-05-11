@@ -11,7 +11,7 @@ module.exports = {
         'src/css/cp-form.css',
       ],
       exportTo: [
-        'dist/css/cp-all.css',
+        'dist/docs/cp-all.css',
       ],
     },
   },
