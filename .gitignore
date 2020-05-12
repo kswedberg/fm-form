@@ -1,1 +1,5 @@
-dist
+dist/*
+!dist/docs/
+
+dist/docs/*
+!dist/docs/.gitkeep
