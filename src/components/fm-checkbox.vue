@@ -7,22 +7,27 @@
       type="checkbox"
       :value="field.name"
     >
-    <label
+    <FmLabel
       v-if="field.label"
       class="FormField-label"
       :for="id"
+      :required="required"
     >
       {{ field.label }}
-    </label>
+    </FmLabel>
   </div>
 </template>
 
 <script>
+import FmLabel from './fm-label.vue';
 
 export default {
   model: {
     prop: 'checked',
     event: 'change',
+  },
+  components: {
+    FmLabel,
   },
   props: {
     checked: {
@@ -32,6 +37,10 @@ export default {
     id: {
       type: String,
       default: '',
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
     field: {
       type: Object,

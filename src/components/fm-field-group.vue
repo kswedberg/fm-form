@@ -16,6 +16,7 @@
         v-on="listeners"
         v-bind="attrs"
         :multiple="multiple"
+        :aria-describedby="field.note"
         :id="`${uid}${field.name}`"
       >
         <option value="">Choose one…</option>

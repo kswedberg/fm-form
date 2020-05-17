@@ -12,6 +12,7 @@
     :label="label"
     :class="fieldClass"
     :field="field"
+    :required="attrs.required"
   />
   <div
     v-else-if="tag === 'input' || tag === 'textarea'"
@@ -20,13 +21,13 @@
     <h3 v-if="heading" class="FormField-heading">
       {{ heading }}
     </h3>
-    <label
+    <FmLabel
       v-if="label && !/radio|hidden/.test(type)"
-      class="FormField-label"
+      :required="attrs.required"
       :for="id"
     >
       {{ label }}
-    </label>
+    </FmLabel>
 
     <input
       v-if="tag == 'input'"
@@ -38,15 +39,16 @@
       class="FormField-input"
       :id="id"
       :type="type"
+      :aria-describedby="field.note"
       v-bind="attrs"
     >
-    <label
+    <FmLabel
       v-if="label && type === 'radio'"
-      class="FormField-label"
+      :required="attrs.required"
       :for="id"
     >
       {{ label }}
-    </label>
+    </FmLabel>
     <textarea
       v-if="tag == 'textarea'"
       v-model="field.value"
@@ -57,12 +59,14 @@
       class="FormField-input"
       :id="id"
       :type="type"
+      :aria-describedby="field.note"
       v-bind="attrs"
     />
     <div v-if="field.note" :class="{'FormField-note': true, 'is-active': field.value}">
       {{ field.note }}
     </div>
     <FmPreview v-if="field.preview" :field="field" />
+    <slot/>
   </div>
   <FmControl
     v-else
@@ -79,6 +83,8 @@ import FmFieldGroup from './fm-field-group.vue';
 import FmCheckbox from './fm-checkbox.vue';
 import FmControl from './fm-control.js';
 import FmPreview from './fm-preview.vue';
+import FmLabel from './fm-label.vue';
+
 
 export default {
   name: 'FmField',
@@ -88,6 +94,7 @@ export default {
     FmFieldGroup,
     FmCheckbox,
     FmPreview,
+    FmLabel,
   },
   props: {
     field: {
