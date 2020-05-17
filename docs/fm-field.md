@@ -22,6 +22,98 @@ export default {
 </script>
 ```
 
+### Other inputs
+
+```vue
+<template>
+  <fieldset>
+    <legend>Various inputs with various `type`s and `inputmode`s</legend>
+    <div style="margin-bottom: 1.5em; border-bottom: 1px solid #f3f3f3;" v-for="field in fields">
+      <FmField
+        v-model="field.value"
+        :field="field"
+      >
+        <div v-for="key in Object.keys(field).filter((k) => !/name|label/.test(k))">
+          <strong>{{ key }}</strong>: {{ field[key] }}
+        </div>
+      </FmField>
+
+    </div>
+  </fieldset>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      fields: [
+        {
+          name: 'fullname',
+          label: 'Full Name',
+          autocomplete: 'name',
+
+        },
+        {
+          name: 'username',
+          label: 'User Name',
+          autocomplete: 'username',
+          autocapitalize: 'none',
+          autocorrect: 'off',
+          required: true,
+        },
+        {
+          name: 'email',
+          label: 'Email',
+          type: 'email',
+          inputmode: 'email',
+        },
+        {
+          name: 'decimal',
+          label: 'Decimal',
+          type: 'text',
+          inputmode: 'decimal',
+        },
+        {
+          name: 'numeric',
+          label: 'Numeric',
+          type: 'number',
+          inputmode: 'numeric',
+        },
+        {
+          name: 'numpat',
+          label: 'Number Pattern',
+          type: 'text',
+          pattern: '[0-9]*'
+        },
+        {
+          name: 'onetime',
+          label: 'One-time Code',
+          autocomplete: 'one-time-code',
+        },
+        {
+          name: 'phone',
+          label: 'Phone',
+          type: 'tel',
+          inputmode: 'tel',
+        },
+        {
+          name: 'url',
+          label: 'Website',
+          type: 'url',
+          inputmode: 'url',
+        },
+        {
+          name: 'search',
+          label: 'Search',
+          type: 'text',
+          inputmode: 'search',
+        }
+      ],
+    }
+  },
+};
+</script>
+```
+
 ### Single Checkbox
 
 ```js
