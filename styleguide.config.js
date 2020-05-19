@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   title: 'FM Form Components',
 
-  styleguideDir: 'dist/docs',
+  styleguideDir: '.',
   styleguidePublicPath: '',
   ribbon: {
     text: 'Back to Github',
