@@ -22,12 +22,12 @@ export default {
 </script>
 ```
 
-### Other inputs
+### Inputs with various attributes
 
 ```vue
 <template>
-  <fieldset>
-    <legend>Various inputs with various `type`s and `inputmode`s</legend>
+  <form @submit.prevent>
+    <p>Especially on mobile devices, some attributes can dramatically affect how text is entered and what the keyboard looks like.</p>
     <div style="margin-bottom: 1.5em; border-bottom: 1px solid #f3f3f3;" v-for="field in fields">
       <FmField
         v-model="field.value"
@@ -37,9 +37,9 @@ export default {
           <strong>{{ key }}</strong>: {{ field[key] }}
         </div>
       </FmField>
-
     </div>
-  </fieldset>
+    <FmButton>Send</FmButton>
+  </form>
 </template>
 <script>
 export default {
