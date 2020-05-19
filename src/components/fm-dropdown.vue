@@ -1,13 +1,20 @@
 <template>
   <div @keydown.tab="tabKeyPressed = true" @blur.capture="onBlur" class="FormField FormField--select">
-    <span @click="showOptions" :id="`${uid}-label`" class="FormField-label Label">{{ label }}</span>
+    <span
+      v-if="label"
+      @click="showOptions"
+      :id="`${uid}-label`"
+      class="FormField-label Label"
+    >
+      {{ label }}
+    </span>
     <div class="Select">
       <button
         @click="toggleOptions"
         @keydown="search"
-        @keyup.up.exact.prevent.stop="selectOption($event, 'prev')"
-        @keyup.down.exact.prevent.stop="selectOption($event, 'next')"
         @keydown.up.down.prevent.stop
+        @keyup.up.exact.prevent.stop="selectPrevOption"
+        @keyup.down.exact.prevent.stop="selectNextOption"
         ref="button"
         :id="`${uid}-button`"
         aria-haspopup="listbox"
@@ -29,54 +36,59 @@
         aria-hidden="true"
         class="u-visuallyHidden"
       >
-      <transition name="SelectFade">
-        <ul
-          v-show="optionsVisible"
-          @focus="setupFocus"
-          @keyup.up.prevent.stop="selectOption($event, 'prev')"
-          @keyup.down.prevent.stop="selectOption($event, 'next')"
-          @keydown="search"
-          @keydown.up.down.prevent.stop
-          @keydown.esc.prevent="reset"
-          @keydown.enter.prevent="selectFocusedOption"
-          ref="options"
-          tabindex="-1"
-          role="listbox"
-          :aria-labelledby="`${uid}-label`"
-          :aria-activedescendant="activeDescendant"
-          class="Select-options"
+      <ul
+        v-show="optionsVisible"
+        @focus="setupFocus"
+        @keyup.up.prevent.stop="selectPrevOption"
+        @keyup.down.prevent.stop="selectNextOption"
+        @keydown="search"
+        @keydown.up.down.prevent.stop
+        @keydown.esc.prevent="reset"
+        @keydown.enter.prevent="selectFocusedOption"
+        @keydown.space.prevent="selectFocusedOption"
+        @wheel.stop
+        ref="options"
+        tabindex="-1"
+        role="listbox"
+        :aria-labelledby="`${uid}-label`"
+        :aria-activedescendant="activeDescendant"
+        class="Select-options"
+      >
+        <li
+          v-if="placeholder && !excludePlaceholderFromList"
+          @click="onPlaceholderClick"
+          :aria-selected="activeOptionIndex === -1"
+          :class="{
+            'has-focus': focusIndex === -1,
+            'is-active': !multiple && activeOptionIndex === -1
+          }"
+          class="Select-option"
         >
-          <li
-            v-if="placeholder && !excludePlaceholderFromList"
-            @click="onPlaceholderClick"
-            :aria-selected="activeOptionIndex === -1"
-            :class="{
-              'has-focus': focusIndex === -1,
-              'is-active': activeOptionIndex === -1
-            }"
-            class="Select-option"
-          >
-            {{ placeholder }}
-          </li>
-          <li
-            v-for="(option, index) in options"
-            @click="onOptionClick(option)"
-            :key="option.text"
-            ref="option"
-            :id="`${uid}-option-${index}`"
-            :aria-selected="activeOptionIndex === index"
-            :class="{
-              'has-focus': focusIndex === index,
-              'is-active': activeOptionIndex === index
-            }"
-            class="Select-option"
-            :style="option.styles"
-            role="option"
-          >
+          {{ placeholder }}
+        </li>
+        <li
+          v-for="(option, index) in options"
+          @click="onOptionClick(option)"
+          :key="option.text"
+          ref="option"
+          :id="`${uid}-option-${index}`"
+          :aria-selected="activeOptionIndex === index"
+          :class="{
+            'has-focus': focusIndex === index,
+            'is-active': !multiple && activeOptionIndex === index
+          }"
+          class="Select-option"
+          :style="option.styles"
+          role="option"
+        >
+          <span v-if="multiple" :class="{'Select-cb': true, 'is-chosen': value.includes(option.value)}">
             {{ option.text }}
-          </li>
-        </ul>
-      </transition>
+          </span>
+          <template v-else>
+            {{ option.text }}
+          </template>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -88,7 +100,6 @@ let resetKeysSoFarTimer;
 
 export default {
   name: 'FmDropdown',
-  inheritAttrs: false,
   components: {
     ArrowDownIcon,
   },
@@ -98,7 +109,7 @@ export default {
   props: {
     label: {
       type: String,
-      required: true,
+      default: null,
     },
     placeholder: {
       type: String,
@@ -112,9 +123,15 @@ export default {
       type: Array,
       default: () => [],
     },
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
     value: {
-      type: [String, Number],
-      default: '',
+      type: [String, Number, Array],
+      default() {
+        return this.multiple ? [] : '';
+      },
     },
   },
   data() {
@@ -155,8 +172,18 @@ export default {
         return opt.text;
       });
     },
+    chosenLabels() {
+      return this.placeholder && !this.excludePlaceholderFromList && !this.value.length ?
+        this.placeholder :
+        `${this.value.length} selected`;
+      // this.options
+      // .filter(({value}) => this.value.includes(value))
+      // .map(({text}) => text)
+      // .join(', ');
+    },
+
     activeText() {
-      return this.labels[this.activeOptionIndex];
+      return this.multiple ? this.chosenLabels : this.labels[this.activeOptionIndex];
     },
     activeOptionIndex() {
       return this.values.findIndex((val) => val === this.value);
@@ -187,11 +214,11 @@ export default {
   },
   watch: {
     focusIndex(index, oldindex) {
-      if (!this.items[index]) {
+      if (index > -1 && !this.items[index]) {
         return;
       }
 
-      const activeItem = this.$refs.option[index];
+      const activeItem = this.$refs.option[index] || this.$refs.option[0];
 
       if (activeItem && (activeItem.nodeName || activeItem.$el)) {
         this.$refs.options.scrollTop = activeItem.offsetTop - activeItem.clientHeight;
@@ -204,7 +231,7 @@ export default {
       this.$refs.button.focus();
     },
     onPlaceholderClick() {
-      this.$emit('change', '');
+      this.$emit('change', this.multiple ? [] : '');
       this.reset();
     },
     async onOptionClick(option) {
@@ -212,8 +239,7 @@ export default {
 
       this.focusIndex = index;
       await this.$nextTick();
-      this.$emit('change', option.value);
-      this.reset();
+      this.updateValue();
     },
     onBlur(event) {
       if (this.$el.contains(event.relatedTarget)) {
@@ -232,7 +258,7 @@ export default {
     hideOptions() {
       this.optionsVisible = false;
     },
-    async reset() {
+    async reset(resetValue) {
       this.hideOptions();
       await this.$nextTick();
       this.$refs.button.focus();
@@ -244,46 +270,95 @@ export default {
       // this.$emit('change', this.values[0]);
     },
 
-    selectFocusedOption() {
+    // VALUE UPDATE METHODS:
+    updateSingleValue(skipReset) {
       const value = this.focusIndex === -1 ? '' : this.values[this.focusIndex];
 
-      /**
-       * Change event. Emits change with value
-       * @type {string}
-       */
       this.$emit('change', value);
-      this.reset();
+      if (!skipReset) {
+        this.reset();
+      }
+    },
+    updateMultipleValue(skipReset) {
+      if (this.focusIndex === -1) {
+        return this.$emit('change', []);
+      }
+
+      const newValue = this.values[this.focusIndex];
+      const values = [...this.value];
+      const index = values.indexOf(newValue);
+
+      if (index === -1) {
+        values.push(newValue);
+      } else {
+        values.splice(index, 1);
+      }
+
+      this.$emit('change', values);
+      if (!skipReset) {
+        this.reset();
+      }
+    },
+    updateValue(skipReset) {
+      return this.multiple ? this.updateMultipleValue(skipReset) : this.updateSingleValue(skipReset);
+    },
+    // ↑↑ Value update methods ↑↑
+
+    selectFocusedOption(event) {
+      this.updateValue();
+    },
+    selectPrevOption() {
+
+      if (this.multiple && !this.optionsVisible) {
+        return;
+      }
+      this.focusIndex = this.prevFocusIndex;
+      if (!this.optionsVisible) {
+        const value = this.prevOptionsIndex === -1 ? '' : this.values[this.prevOptionIndex];
+
+        this.$emit('change', value);
+      }
     },
 
-    selectOption(event, direction) {
-
-      this.focusIndex = this[`${direction}FocusIndex`];
+    selectNextOption() {
+      if (this.multiple && !this.optionsVisible) {
+        return this.showOptions();
+      }
+      this.focusIndex = this.nextFocusIndex;
       if (!this.optionsVisible) {
-        const index = this[`${direction}OptionIndex`];
-        const value = index === -1 ? '' : this.values[index];
+        const value = this.nextOptionIndex === -1 ? '' : this.values[this.nextOptionIndex];
 
         this.$emit('change', value);
       }
     },
     search(event) {
       clearTimeout(resetKeysSoFarTimer);
+      const {metaKey, altKey, ctrlKey} = event;
+
       // No alphanumeric key was pressed.
-      if (event.key.length > 1) {
+      if (metaKey || altKey || ctrlKey || event.key.length > 1) {
         return;
       }
+
 
       resetKeysSoFarTimer = setTimeout(() => {
         this.keysSoFar = '';
       }, 500);
 
       this.keysSoFar += event.key;
-      const matchingOption = this.lowerValues.find((val) => val.startsWith(this.keysSoFar));
+      const prevIndex = this.focusIndex;
+      const matchingIndex = this.lowerValues.findIndex((val) => val.startsWith(this.keysSoFar));
 
-      if (!matchingOption) {
+      // on key presses, ensure the matching index is visible
+      // (focusIndex watcher positions it with scrollTop)
+      this.focusIndex = matchingIndex < this.lowestFocus ? this.lowestFocus : matchingIndex;
+
+      if (prevIndex === this.focusIndex) {
         return;
       }
 
-      this.$emit('change', matchingOption);
+      this.updateValue('skipreset');
+      // this.$emit('change', this.values[matchingIndex]);
     },
   },
 };

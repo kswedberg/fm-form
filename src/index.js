@@ -10,6 +10,7 @@ import FmFieldGroup from './components/fm-field-group.vue';
 import FmForm from './components/fm-form.vue';
 import FmButton from './components/fm-button.vue';
 import FmConfirmButton from './components/fm-confirm-button.vue';
+import FmDropdown from './components/fm-dropdown.vue';
 import {formFields as defaultFields} from './default-fields.js';
 import {deepCopy} from './utils/deep-copy.js';
 
@@ -120,6 +121,7 @@ export {
   FmForm,
   FmButton,
   FmConfirmButton,
+  FmDropdown,
   FmField,
   FmFieldGroup
 };
