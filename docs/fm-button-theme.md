@@ -8,7 +8,9 @@ For example, given
 
 ```html static
 <FmButton theme="bold" mode="icon" aria-label="Brighten">
-  <img src="../styleguide/sample.svg">
+  <svg>
+    <!-- etc. -->
+  </svg>
 </FmButton>
 ```
 
@@ -16,7 +18,9 @@ the rendered html would look like
 
 ```html
 <button type="button" class="Button Button--bold Button--icon" aria-label="Brighten">
-  <img src="../styleguide/sample.svg">
+  <svg>
+    <!-- etc. -->
+  </svg>
 </button>
 ```
 
@@ -26,21 +30,24 @@ as you can see:
 <template>
   <div>
     <FmButton theme="bold" mode="icon" aria-label="Brighten">
-      <img svg-inline src="../styleguide/sample.svg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 26">
+          <g fill-rule="evenodd" class="sun-g" transform="translate(0 1)">
+              <ellipse cx="12.076" cy="12" rx="5.908" ry="5.846"/>
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M12.076 0v3.75M11.78 19.85v3.75M23.256 11.954h-3.6M4.2 11.646H.6M19.834 20.253l-2.546-2.652M6.568 6L4.022 3.346M3.813 20.035l2.546-2.652M17.497 6.217l2.546-2.652"/>
+          </g>
+      </svg>
     </FmButton>
     <button type="button" class="Button Button--bold Button--icon">
-      <img svg-inline src="../styleguide/sample.svg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 26">
+          <g fill-rule="evenodd" class="sun-g" transform="translate(0 1)">
+              <ellipse cx="12.076" cy="12" rx="5.908" ry="5.846"/>
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M12.076 0v3.75M11.78 19.85v3.75M23.256 11.954h-3.6M4.2 11.646H.6M19.834 20.253l-2.546-2.652M6.568 6L4.022 3.346M3.813 20.035l2.546-2.652M17.497 6.217l2.546-2.652"/>
+          </g>
+      </svg>
     </button>
   </div>
 </template>
-<script>
-import IconSample from '../styleguide/sample.svg';
-export default {
-  components: {
-    IconSample
-  }
-}
-</script>
+
 ```
 
 You can, of course, use any `theme` or `mode` you want, but the following have some default styles applied to them so you don't have to start from ground zero:

@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@znck/prop-types": "^0.6.3",
-    "vue-types": "^1.6.0"
+    "vue-types": "^1.6.0",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
