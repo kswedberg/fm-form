@@ -10,7 +10,7 @@
       [`Button--size-${size}`]: size,
       [`Button--icon-${iconPosition}`]: mode === 'icon',
     }"
-    :type="type"
+    :type="buttonType"
     :disabled="isDisabled"
     v-bind="attrs"
     :to="to"
@@ -22,7 +22,7 @@
 
 <script>
 /**
-* Button that transforms to a <nuxt-link> if the `to` prop is passed to it
+* Button that transforms to a <nuxt-link> if the `to` prop is passed to it or an <a> if it has an `href`
 */
 export default {
   name: 'FmButton',
@@ -81,6 +81,9 @@ export default {
       }
 
       return this.attrs.href ? 'a' : 'button';
+    },
+    buttonType() {
+      return this.to || this.$attrs.href ? null : this.type;
     },
   },
 };
