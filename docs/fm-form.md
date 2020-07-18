@@ -68,6 +68,17 @@ export default {
       ],
     },
     {
+      name: 'multitexts',
+      type: 'text',
+      heading: 'Multiple Text Inputs',
+      value: ['one', 'two', 'three'],
+      items: [
+        'one',
+        'two',
+        'three',
+      ],
+    },
+    {
       name: 'radio',
       type: 'radio',
       heading: 'Radio Buttons',
@@ -89,8 +100,15 @@ export default {
   ],
   computed: {
     fieldValues() {
+      // This is what getFieldData() does on submit
       return this.formFields.reduce((obj, curr) => {
-        obj[curr.name] = curr.value;
+        if (typeof curr.value === 'string') {
+          obj[curr.name] = curr.value.trim();
+        } else if (Array.isArray(curr.value)) {
+          obj[curr.name] = curr.value
+          .map((val) => (val || '').trim())
+          .filter((val) => !!val);
+        }
 
         return obj;
       }, {});
@@ -102,7 +120,7 @@ export default {
         console.log(item, response[item]);
       });
 
-      return {status: 'success', message: 'Successfully fake submitted the form! Check console to see what would have gone in body'};
+      return {status: 'success', message: 'Successfully fake-submitted the form! Check console to see what would have gone in body'};
     },
   },
 };
@@ -119,5 +137,6 @@ export default {
   flex-basis: 10em;
   flex-grow: 1;
 }
+
 </style>
 ```

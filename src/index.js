@@ -7,10 +7,12 @@
 import Vue from 'vue';
 import FmField from './components/fm-field.vue';
 import FmFieldGroup from './components/fm-field-group.vue';
+import FmMultitext from './components/fm-multitext.vue';
 import FmForm from './components/fm-form.vue';
 import FmButton from './components/fm-button.vue';
 import FmConfirmButton from './components/fm-confirm-button.vue';
 import FmDropdown from './components/fm-dropdown.vue';
+
 import {formFields as defaultFields} from './default-fields.js';
 import {deepCopy} from './utils/deep-copy.js';
 
@@ -97,6 +99,7 @@ const install = function(Vue, options = {}) {
   Vue.component(options.FmConfirmButtonName || 'FmConfirmButton', FmConfirmButton);
   Vue.component(options.FmFieldName || 'FmField', FmField);
   Vue.component(options.FmFieldGroupName || 'FmFieldGroup', FmFieldGroup);
+  Vue.component(options.FmMultitextName || 'FmMultitext', FmMultitext);
 };
 
 const FormPlugin = {

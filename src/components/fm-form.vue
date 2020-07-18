@@ -6,7 +6,8 @@
     <div v-if="!hideForm">
       <!-- @slot Content to display above fields from `fields` prop  -->
       <slot />
-      <FmField
+      <component
+        :is="(field.multiple || field.items) && field.type === 'text' ? 'FmMultitext' : 'FmField'"
         v-for="field in fields"
         v-model="field.value"
         @change="$emit('change', field)"
@@ -21,7 +22,6 @@
         <!-- @slot Place buttons here to replace the default submit button -->
         <slot name="actions">
           <FmButton
-            v-if="fields.length"
             :theme="theme"
             type="submit"
             :spinning="isSending"
@@ -53,7 +53,7 @@
 
 <script>
 /**
-* @example ../../docs/fm-form.md
+ * @example ../../docs/fm-form.md
  */
 import {getAxiosErrorData} from '../utils/axios.js';
 
@@ -138,7 +138,15 @@ export default {
     // Not sure why. Might have to do with v-model (on change instead of on input) and/or nested properties
     getFieldData() {
       return this.fields.reduce((obj, curr) => {
-        obj[curr.name] = curr.value;
+        if (typeof curr.value === 'string') {
+          obj[curr.name] = curr.value.trim();
+        } else if (Array.isArray(curr.value)) {
+          obj[curr.name] = curr.value
+          .map((val) => {
+            return typeof val === 'string' ? val.trim() : val;
+          })
+          .filter((val) => !!val);
+        }
 
         return obj;
       }, {});

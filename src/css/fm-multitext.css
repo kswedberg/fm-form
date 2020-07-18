@@ -1,0 +1,12 @@
+.FormField--multitext {
+  input {
+    display: inline-block;
+    margin-right: 15px;
+  }
+  .sr-only {
+    height: 0;
+    width: 0;
+    font-size: 1px;
+    position: absolute;
+  }
+}

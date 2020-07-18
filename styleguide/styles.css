@@ -5,12 +5,14 @@
 
 @import '../src/css/fm-button.css';
 @import '../src/css/fm-confirm-button.css';
-@import '../src/css/fm-dropdown.css';
 @import '../src/css/fm-field.css';
+@import '../src/css/fm-dropdown.css';
+@import '../src/css/fm-multitext.css';
 @import '../src/css/fm-form.css';
 
 :root {
-  --sysfont: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --sysfont: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
 }
 body {
   line-height: 1.4;
@@ -20,7 +22,10 @@ body {
   font-family: var(--sysfont);
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font-size: 1em;
   font-family: var(--sysfont);
 }
