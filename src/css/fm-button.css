@@ -17,9 +17,9 @@
   font-size: 1em;
   display: inline-block;
   padding-top: var(--btn-padding-top, 1em);
-  padding-right:  1.5em;
+  padding-right: 1.5em;
   padding-bottom: var(--btn-padding-bottom, 1em);
-  padding-left:  1.5em;
+  padding-left: 1.5em;
   cursor: pointer;
   border-radius: var(--btn-border-radius, 0);
   border-width: var(--btn-border-width, 1px);
@@ -68,33 +68,31 @@
 /* Sizes: */
 
 .Button--size-s {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 
-.Button--size-  l {
+.Button--size--l {
   font-size: 1.125em;
 }
 
-.Button--size-  xl {
+.Button--size--xl {
   font-size: 1.25em;
 }
 
 /* Modes: */
 .Button--character {
-  font-family: Helvetica, Arial, sans-serif;
-  position: absolute;
-  top: -12px;
-  left: -12px;
-  width: 24px;
-  height: 24px;
+  width: 23px;
+  height: 23px;
   padding: 0;
-  line-height: 22px;
-  font-weight: 400;
-  background: transparent;
+  line-height: 21px;
   cursor: pointer;
   border-radius: 50%;
   border: 1px solid;
-  border-color: var(--border-color);
+  border-color: var(--border-color, #999);
+  &:focus {
+    outline: none;
+    border-color: var(--p-btn-bg);
+  }
 }
 
 .Button--icon {
@@ -155,7 +153,6 @@
     border-top-color: var(--s-btn-spin);
   }
 }
-
 
 .Button--bold {
   background-color: var(--b-btn-bg);
