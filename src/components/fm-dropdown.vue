@@ -8,7 +8,7 @@
     >
       {{ label }}
     </span>
-    <div class="Select">
+    <div :class="['Select', optionsVisible && 'is-open']">
       <button
         @click="toggleOptions"
         @keydown="search"
@@ -47,16 +47,16 @@
         @keydown.enter.prevent="selectFocusedOption"
         @keydown.space.prevent="selectFocusedOption"
         @wheel.stop
+        @click="onPlaceholderClick"
         ref="options"
+        :class="['Select-options', `Select-options--${optionsModifier}`]"
         tabindex="-1"
         role="listbox"
         :aria-labelledby="`${uid}-label`"
         :aria-activedescendant="activeDescendant"
-        class="Select-options"
       >
         <li
           v-if="placeholder && !excludePlaceholderFromList"
-          @click="onPlaceholderClick"
           :aria-selected="activeOptionIndex === -1"
           :class="{
             'has-focus': focusIndex === -1,
@@ -75,7 +75,8 @@
           :aria-selected="activeOptionIndex === index"
           :class="{
             'has-focus': focusIndex === index,
-            'is-active': !multiple && activeOptionIndex === index
+            'is-active': !multiple && activeOptionIndex === index,
+            'is-disabled': option.disabled,
           }"
           class="Select-option"
           :style="option.styles"
@@ -140,6 +141,7 @@ export default {
       tabKeyPressed: false,
       optionsVisible: false,
       focusIndex: -1,
+      optionsModifier: 'below',
     };
   },
   computed: {
@@ -153,6 +155,7 @@ export default {
           value: opt.value,
           text: opt.text || opt.label,
           styles: opt.styles,
+          disabled: opt.disabled,
         } : {
           value: opt,
           text: opt,
@@ -165,7 +168,7 @@ export default {
       });
     },
     lowerValues() {
-      return this.values.map((val) => val.toLowerCase());
+      return this.values.map((val) => `${val || ''}`.toLowerCase());
     },
     labels() {
       return this.options.map((opt) => {
@@ -224,6 +227,18 @@ export default {
         this.$refs.options.scrollTop = activeItem.offsetTop - activeItem.clientHeight;
       }
     },
+    optionsVisible: {
+      immediate: true,
+      handler(isVisible) {
+        if (!isVisible || this.dropdownPosition !== 'auto') {
+          return;
+        }
+        const bcr = this.$refs.button && this.$refs.button.getBoundingClientRect && this.$refs.button.getBoundingClientRect() || {bottom: 0};
+        const bDiff = window.innerHeight - bcr.bottom;
+
+        this.optionsModifier = bDiff < 150 ? 'above' : 'below';
+      },
+    },
   },
   methods: {
     handleFocusTrap() {
@@ -235,6 +250,10 @@ export default {
       this.reset();
     },
     async onOptionClick(option) {
+      if (option.disabled) {
+        return;
+      }
+
       const index = this.values.findIndex((item) => item === option.value);
 
       this.focusIndex = index;
@@ -339,7 +358,6 @@ export default {
       if (metaKey || altKey || ctrlKey || event.key.length > 1) {
         return;
       }
-
 
       resetKeysSoFarTimer = setTimeout(() => {
         this.keysSoFar = '';
